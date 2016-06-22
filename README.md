@@ -1,6 +1,6 @@
-ShinyEd
+statShinyApps
 =======
 
-Statistics education apps created in Shiny. Source code available on GitHub. 
+This is a collection of apps created in Shiny/RStudio for demonstrating core stat concepts. 
 
-All applets can be accessed via https://stat.duke.edu/~mc301/shinyed/.
+Everything here was originally created by github.com/ShinyEd, with small modifications to better suit my courses at Tarleton State University.
