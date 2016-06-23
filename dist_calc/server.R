@@ -1,4 +1,3 @@
-source('./helper/chiTail.R')
 source('./helper/FTail.R')
 source('./helper/normTail.R')
 
@@ -20,18 +19,7 @@ shinyServer(function(input, output)
   output$tail = renderUI(
   {
     #print("tail")
-    if (input$dist == "rbinom")
-    {
-      selectInput(inputId = "tail",
-                  label = "Find Area:",
-                  choices = c("Lower Tail"="lower", 
-                              "Upper Tail"="upper", 
-                              "Both Tails"="both",
-                              "Middle"="middle",
-                              "Equality"="equal"),
-                  selected = "lower")
-    }
-    else if (input$dist == "rf" | input$dist == "rchisq"){
+    if (input$dist == "rf"){
       selectInput(inputId = "tail",
                   label = "Find Area:",
                   choices = c("Upper Tail"="upper"),
@@ -311,7 +299,8 @@ shinyServer(function(input, output)
     {
       find_normal_step = function(sd)
       {
-        10^round(log(7*sd/100,10))
+        #10^round(log(7*sd/100,10))
+        0.01
       }
 
       if (is.null(input$mu) | is.null(input$sd)){
@@ -327,7 +316,7 @@ shinyServer(function(input, output)
       value = mu - 1.96 * sd
       min   = mu - 4 * sd
       max   = mu + 4 * sd
-      step  = find_normal_step(sd)
+      step  = 0.01#find_normal_step(sd)
       if (mu == 0 & sd == 1) {step = .01}
     }
     else if (input$dist == "rt")
@@ -408,7 +397,7 @@ shinyServer(function(input, output)
         value = mu + 1.96 * sd
         min   = mu - 4 * sd
         max   = mu + 4 * sd
-        step  = find_normal_step(sd)
+        step  = 0.01#find_normal_step(sd)
       }
       else if (input$dist == "rt")
       {
