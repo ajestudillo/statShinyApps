@@ -2,7 +2,7 @@ library(shiny)
 
 shinyUI(pageWithSidebar(
   
-  headerPanel("Calculator for Common Distributions"),
+  headerPanel("Probability Calculator for Common Distributions"),
   
   sidebarPanel(
     #radio button or dropdown?
@@ -37,9 +37,12 @@ shinyUI(pageWithSidebar(
     uiOutput("a"),
     uiOutput("b"),
     
-    br()),
+    br(),
+    br(),
+    p("Designed by ", a("Dr. Tom Faulkenberry",href="http://tomfaulkenberry.github.io"), ", modified from original code written by ", a("Dr. Mine Cetinkaya-Rundel",href="http://www2.stat.duke.edu/~mc301/")),
+    p("For source code, vist my ", a("Github page", href="http://github.com/tomfaulkenberry/statShinyApps"))
   
-  
+  ),
   
   mainPanel(
     plotOutput("plot"),

@@ -2,6 +2,6 @@ name: dist_calc
 account: tomfaulkenberry
 server: shinyapps.io
 appId: 121687
-bundleId: 539017
+bundleId: 539046
 url: https://tomfaulkenberry.shinyapps.io/dist_calc/
-when: 1471980371.21324
+when: 1471982753.25132
