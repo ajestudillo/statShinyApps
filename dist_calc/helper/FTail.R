@@ -1,5 +1,5 @@
 FTail <-
-function(U=NULL, df_n=100, df_d = 100, curveColor=1, border=1, col="#569BBD", xlim=NULL, ylim=NULL, xlab='', ylab='', detail=999){
+function(U=NULL, df_n=100, df_d = 100, curveColor=1, border=1, col="#4F2D7F", xlim=NULL, ylim=NULL, xlab='', ylab='', detail=999){
 	if(U <= 5){xlim <- c(0,5)}
   if(U > 5){xlim <- c(0,U+0.01*U)}
 	temp <- diff(range(xlim))

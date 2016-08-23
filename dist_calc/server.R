@@ -10,7 +10,7 @@ suppressMessages(library(shiny, quietly = TRUE))
 if (!("openintro" %in% names(installed.packages()[,"Package"]))) {install.packages("openintro")}
 suppressMessages(library(openintro, quietly = TRUE))
 
-defaults = list("tail" = "lower",
+defaults = list("tail" = "upper",
                 "lower_bound" = "open",
                 "upper_bound" = "open")
 
@@ -33,7 +33,7 @@ shinyServer(function(input, output)
                               "Upper Tail"="upper", 
                               "Both Tails"="both",
                               "Middle"="middle"),
-                  selected = "lower")
+                  selected = "upper")
     }
   })
 
@@ -227,10 +227,18 @@ shinyServer(function(input, output)
   output$df1 = renderUI(
   {
     #print("df1")
-    if (input$dist %in% c("rt","rchisq","rf"))
+    if (input$dist == "rt")
     {
-      sliderInput(ifelse(input$dist %in% c("rt","rchisq"), "df","df1"),
+      sliderInput("df",
                   "Degrees of freedom",
+                  value = 10,
+                  min = 1,
+                  max = 50)
+    }
+    else if (input$dist == "rf")
+    {
+      sliderInput("df1",
+                  "Numerator degrees of freedom",
                   value = 10,
                   min = 1,
                   max = 50)
@@ -243,46 +251,12 @@ shinyServer(function(input, output)
     if (input$dist == "rf")
     {
       sliderInput("df2",
-                  "Degrees of freedom (2)",
+                  "Denominator degrees of freedom",
                   value = 10,
                   min = 1,
                   max = 50)
     }
   })
-
-
-  #########################
-  # Binomial distribution #
-  #########################
-
-  output$n = renderUI(
-  {
-    #print("n")
-    if (input$dist == "rbinom")
-    {
-      sliderInput("n",
-                  "n",
-                  value = 10,
-                  min = 1,
-                  max = 250,
-                  step = 1)
-    }
-  })
-
-  output$p = renderUI(
-  {
-    #print("p")
-    if (input$dist == "rbinom")
-    {
-      sliderInput("p",
-                  "p",
-                  value = 0.5,
-                  min = 0,
-                  max = 1,
-                  step = .01)
-    }
-  })
-  
 
 
 
@@ -297,12 +271,7 @@ shinyServer(function(input, output)
 
     if (input$dist == "rnorm")
     {
-      find_normal_step = function(sd)
-      {
-        #10^round(log(7*sd/100,10))
-        0.01
-      }
-
+     
       if (is.null(input$mu) | is.null(input$sd)){
         shiny:::flushReact()
         return()
@@ -316,14 +285,14 @@ shinyServer(function(input, output)
       value = mu - 1.96 * sd
       min   = mu - 4 * sd
       max   = mu + 4 * sd
-      step  = 0.01#find_normal_step(sd)
+      step  = 0.01
       if (mu == 0 & sd == 1) {step = .01}
     }
     else if (input$dist == "rt")
     {
       value = -1.96 
-      min   = -6
-      max   = 6
+      min   = -4
+      max   = 4
       step  = 0.01
     }
     else if (input$dist == "rf")
@@ -333,25 +302,7 @@ shinyServer(function(input, output)
       max   = round(qf(.995,as.numeric(input$df1),as.numeric(input$df2))*1.05,digits=2)
       step  = 0.01
     }
-    else if (input$dist == "rchisq")
-    {
-      value = round(qchisq(.95,as.numeric(input$df)),digits=2)
-      min   = 0
-      max   = round(qchisq(.995,as.numeric(input$df)),digits=2)
-      step  = 0.01
-    }
-    else if (input$dist == "rbinom")
-    {
-      if (is.null(input$n)){
-        shiny:::flushReact()
-        return()
-      }
-
-      value = round(input$n/4)
-      min = 0
-      max = input$n
-      step = 1
-    }
+    
 
     sliderInput("a", "a",
                 value = value,
@@ -379,11 +330,6 @@ shinyServer(function(input, output)
 
       if (input$dist == "rnorm")
       {
-        find_normal_step = function(sd)
-        {
-          10^round(log(7*sd/100,10))
-        }
-
         if (is.null(input$mu) | is.null(input$sd)){
           shiny:::flushReact()
           return()
@@ -397,28 +343,16 @@ shinyServer(function(input, output)
         value = mu + 1.96 * sd
         min   = mu - 4 * sd
         max   = mu + 4 * sd
-        step  = 0.01#find_normal_step(sd)
+        step  = 0.01
       }
       else if (input$dist == "rt")
       {
         value = 1.96 
-        min   = -6
-        max   = 6
+        min   = -4
+        max   = 4
         step  = 0.01
       }
-      else if (input$dist == "rbinom")
-      {
-        if (is.null(input$n)){
-          shiny:::flushReact()
-          return()
-        }
-
-        value = round(input$n*3/4)
-        min = 0
-        max = input$n
-        step = 1
-      }
-
+      
       sliderInput("b", "b",
                   value = value,
                   min   = min,
@@ -509,24 +443,6 @@ shinyServer(function(input, output)
           title(main="t Distribution")
         }
       }
-        else if (input$dist == "rchisq")
-        {
-          if(is.null(input$df))
-          {
-            shiny:::flushReact()
-            return()
-          }
-          M = NULL
-          if (input$tail == "middle")
-          {
-            M = c(L,U)
-            L = NULL
-            U = NULL
-          }
-          
-          chiTail(U=U, df=input$df, xlim = c(0,round(qchisq(.995,input$df),digits=2)+1))
-          title(main="Chi^2 Distribution")
-        }
         else if (input$dist == "rf")
         {        
           if(is.null(input$df1) | is.null(input$df2))
@@ -546,70 +462,7 @@ shinyServer(function(input, output)
           FTail(U=U,df_n=input$df1, df_d=input$df2)
           title(main="F Distribution")
         }
-      else if (input$dist == "rbinom")
-      {
-        if(  is.null(input$n)
-           | is.null(input$p)
-           | is.null(input$lower_bound))
-        {
-          shiny:::flushReact()
-          return()
-        }
 
-        if(input$tail %in% c("both","middle") & is.null(input$upper_bound))
-        {
-          shiny:::flushReact()
-          return()
-        }
-
-        d = dbinom(0:input$n,input$n,input$p)
-
-        plot(0,0,type='n',xlim=c(-0.5,input$n+0.5),ylim=c(0,max(d)),
-             xlab="",ylab="", axes=FALSE)
-        axis(1, cex.axis=1.5)
-        axis(2, cex.axis=1.5)
-        title(main=paste("Binomial Distribution"))
-
-
-
-        for (k in 1:length(d)) 
-        {
-            col = NA
-
-            if (input$tail == "lower")
-            {
-              if (input$lower_bound == "open"   & k-1 <  L) col = "#569BBD"
-              if (input$lower_bound == "closed" & k-1 <= L) col = "#569BBD"
-            }
-            else if (input$tail == "upper")
-            {
-              if (input$lower_bound == "open"   & k-1 >  U) col = "#569BBD"
-              if (input$lower_bound == "closed" & k-1 >= U) col = "#569BBD"
-            }
-            else if (input$tail == "equal")
-            {
-              if (k-1 == L) col = "#569BBD"
-            }
-            else if (input$tail == "both")
-            {
-              if (input$lower_bound == "open"   & input$upper_bound == "open"   & (k-1 <  L | k-1 >  U)) col = "#569BBD"
-              if (input$lower_bound == "open"   & input$upper_bound == "closed" & (k-1 <  L | k-1 >= U)) col = "#569BBD"
-              if (input$lower_bound == "closed" & input$upper_bound == "open"   & (k-1 <= L | k-1 >  U)) col = "#569BBD"
-              if (input$lower_bound == "closed" & input$upper_bound == "closed" & (k-1 <= L | k-1 >= U)) col = "#569BBD"
-            }
-            else if (input$tail == "middle")
-            {
-              if (input$lower_bound == "open"   & input$upper_bound == "open"   & k-1 >  L & k-1 <  U) col = "#569BBD"
-              if (input$lower_bound == "open"   & input$upper_bound == "closed" & k-1 >  L & k-1 <= U) col = "#569BBD"
-              if (input$lower_bound == "closed" & input$upper_bound == "open"   & k-1 >= L & k-1 <  U) col = "#569BBD"
-              if (input$lower_bound == "closed" & input$upper_bound == "closed" & k-1 >= L & k-1 <= U) col = "#569BBD"
-            }
-
-            p = matrix(c(-1.5+k,0, -0.5+k,0, -0.5+k,d[k], -1.5+k,d[k], -1.5+k,0),ncol=2,byrow=TRUE)
-          
-            polygon(p, col=col)
-        }
-      }
     }
   })
 
@@ -669,15 +522,6 @@ shinyServer(function(input, output)
       
       f = function(x) pt(x,input$df)
     }
-    else if (input$dist == "rchisq"){
-      if (is.null(input$df))
-      {
-        shiny:::flushReact()
-        return()
-      }
-      
-      f = function(x) pchisq(x,input$df)
-    }
     else if (input$dist == "rf"){
       if (is.null(input$df1) | is.null(input$df2))
       {
@@ -687,39 +531,7 @@ shinyServer(function(input, output)
       
       f = function(x) pf(x,input$df1,input$df2)
     }    
-    else if (input$dist == "rbinom")
-    {
-      if (is.null(input$n) | is.null(input$p) | is.null(input$lower_bound))
-      {
-        shiny:::flushReact()
-        return()
-      }
 
-      if (input$tail == "equal")
-      {
-        f = function(x) dbinom(x,input$n,input$p)
-      }
-      else
-      {
-        f = function(x) pbinom(x,input$n,input$p)
-      
-        if (input$tail %in% c("lower","both") & input$lower_bound == "open") L = L-1
-        if (input$tail %in% c("upper")        & input$lower_bound == "closed") L = L-1
-        if (input$tail %in% c("middle")       & input$lower_bound == "closed") L = L-1
-
-        if (input$tail %in% c("both","middle")) 
-        {
-          if (is.null(input$upper_bound))
-          {
-            shiny:::flushReact()
-            return()
-          }
-
-          if (input$tail == "both"   & input$upper_bound == "closed") U = U-1
-          if (input$tail == "middle" & input$upper_bound == "open") U = U-1
-        } 
-      }
-    }
 
     val = NA
     if (input$tail == "lower")
