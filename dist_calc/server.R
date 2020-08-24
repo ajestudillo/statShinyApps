@@ -198,11 +198,9 @@ shinyServer(function(input, output)
     #print("mean")
     if (input$dist == "rnorm")
     {
-      sliderInput("mu",
+      numericInput("mu",
                   "Mean",
-                  value = 0,
-                  min = -50,
-                  max = 50)
+                  value = 0)
     }
   })
     
@@ -211,13 +209,10 @@ shinyServer(function(input, output)
     #print("sd")
     if (input$dist == "rnorm")
     {
-      sliderInput("sd",
+      numericInput("sd",
                   "Standard deviation",
-                  value = 1,
-                  min = 0.1,
-                  max = 30,
-                  step=0.1)
-    }
+                  value = 1)
+     }
   })
   
   ##########################
@@ -229,19 +224,15 @@ shinyServer(function(input, output)
     #print("df1")
     if (input$dist == "rt")
     {
-      sliderInput("df",
+      numericInput("df",
                   "Degrees of freedom",
-                  value = 10,
-                  min = 1,
-                  max = 50)
+                  value = 10)
     }
     else if (input$dist == "rf")
     {
-      sliderInput("df1",
+      numericInput("df1",
                   "Numerator degrees of freedom",
-                  value = 10,
-                  min = 1,
-                  max = 50)
+                  value = 2)
     }
   })
   
@@ -250,11 +241,9 @@ shinyServer(function(input, output)
     #print("df2")
     if (input$dist == "rf")
     {
-      sliderInput("df2",
+      numericInput("df2",
                   "Denominator degrees of freedom",
-                  value = 10,
-                  min = 1,
-                  max = 50)
+                  value = 10)
     }
   })
 
