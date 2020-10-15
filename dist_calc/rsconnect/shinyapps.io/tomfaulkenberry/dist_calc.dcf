@@ -5,8 +5,8 @@ account: tomfaulkenberry
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 121687
-bundleId: 3552197
+bundleId: 3745932
 url: https://tomfaulkenberry.shinyapps.io/dist_calc/
-when: 1598291797.95455
+when: 1602782390.85439
 asMultiple: FALSE
 asStatic: FALSE

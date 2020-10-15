@@ -107,7 +107,7 @@ shinyServer(function(input, output)
     }
   })
 
-  get_model_text = reactive(
+  get_region_text = reactive(
   {
     if (is.null(input$tail)){
       shiny:::flushReact()
@@ -182,11 +182,9 @@ shinyServer(function(input, output)
     return(text)
   })
 
-  output$model = renderText(
+  output$region = renderText(
   {
-    #print("model")
-
-    get_model_text()
+    get_region_text()
   })
 
   #######################
@@ -226,13 +224,17 @@ shinyServer(function(input, output)
     {
       numericInput("df",
                   "Degrees of freedom",
-                  value = 10)
+                  value = 10,
+                  step=1,
+                  min=1)
     }
     else if (input$dist == "rf")
     {
       numericInput("df1",
                   "Numerator degrees of freedom",
-                  value = 2)
+                  value = 2,
+                  step=1,
+                  min=1)
     }
   })
   
@@ -243,7 +245,9 @@ shinyServer(function(input, output)
     {
       numericInput("df2",
                   "Denominator degrees of freedom",
-                  value = 10)
+                  value = 10,
+                  step=1,
+                  min=1)
     }
   })
 
@@ -279,7 +283,7 @@ shinyServer(function(input, output)
     }
     else if (input$dist == "rt")
     {
-      value = -1.96 
+      value = round(qt(0.025, df=as.numeric(input$df)), digits=2) 
       min   = -4
       max   = 4
       step  = 0.01
@@ -292,12 +296,20 @@ shinyServer(function(input, output)
       step  = 0.01
     }
     
-
-    sliderInput("a", "a",
-                value = value,
-                min   = min,
-                max   = max,
-                step  = step)
+    numericInput("a", 
+                 label = "a",
+                 value = value,
+                 step=step,
+                 min=min,
+                 max=max)
+    
+    # sliderInput("a", "a",
+    #             value = value,
+    #             min   = min,
+    #             max   = max,
+    #             step  = step)
+    # 
+    
   })
 
   output$b = renderUI(
@@ -336,17 +348,24 @@ shinyServer(function(input, output)
       }
       else if (input$dist == "rt")
       {
-        value = 1.96 
+        value = round(qt(0.975, df=as.numeric(input$df)), digits=2)
         min   = -4
         max   = 4
         step  = 0.01
       }
       
-      sliderInput("b", "b",
-                  value = value,
-                  min   = min,
-                  max   = max,
-                  step  = step)
+      numericInput("b",
+                   label = "b",
+                   value = value,
+                   step=step,
+                   min=min,
+                   max=max)
+      
+      # sliderInput("b", "b",
+      #             value = value,
+      #             min   = min,
+      #             max   = max,
+      #             step  = step)
     }
   })  
 
@@ -534,7 +553,7 @@ shinyServer(function(input, output)
     else if (input$tail == "middle")
       val = f(U) - f(L)
     
-    text = paste(get_model_text(),"=",signif(val,3))
+    text = paste("p = ",signif(val,3))
   
     
     text = sub("a",input$a,text)

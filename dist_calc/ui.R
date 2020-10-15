@@ -25,8 +25,8 @@ shinyUI(pageWithSidebar(
     br(),
     br(),
 
-    helpText("Model:"),
-    div(textOutput("model"),style="text-indent:20px;font-size:100%;"),
+    helpText("Region of p-value:"),
+    div(textOutput("region"),style="text-indent:20px;font-size:100%;"),
     br(),
 
     uiOutput("tail"),
@@ -39,7 +39,7 @@ shinyUI(pageWithSidebar(
     
     br(),
     br(),
-    p("Designed by ", a("Dr. Tom Faulkenberry",href="http://tomfaulkenberry.github.io"), ", modified from original code written by ", a("Dr. Mine Cetinkaya-Rundel",href="http://www2.stat.duke.edu/~mc301/")),
+    p("Designed by ", a("Dr. Tom Faulkenberry",href="http://tomfaulkenberry.github.io"), ", modified from original code ", a("here",href="https://github.com/ShinyEd/intro-stats/tree/master/dist_calc")),
     p("For source code, vist my ", a("Github page", href="http://github.com/tomfaulkenberry/statShinyApps"))
   
   ),
