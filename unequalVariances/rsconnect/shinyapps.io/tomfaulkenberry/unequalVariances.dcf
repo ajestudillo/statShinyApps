@@ -1,0 +1,12 @@
+name: unequalVariances
+title: unequalVariances
+username:
+account: tomfaulkenberry
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3068323
+bundleId: 3768361
+url: https://tomfaulkenberry.shinyapps.io/unequalVariances/
+when: 1603322040.99973
+asMultiple: FALSE
+asStatic: FALSE
