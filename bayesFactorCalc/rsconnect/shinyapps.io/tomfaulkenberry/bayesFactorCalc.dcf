@@ -1,0 +1,12 @@
+name: bayesFactorCalc
+title: bayesFactorCalc
+username:
+account: tomfaulkenberry
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3164218
+bundleId: 3821137
+url: https://tomfaulkenberry.shinyapps.io/bayesFactorCalc/
+when: 1604524325.26496
+asMultiple: FALSE
+asStatic: FALSE
