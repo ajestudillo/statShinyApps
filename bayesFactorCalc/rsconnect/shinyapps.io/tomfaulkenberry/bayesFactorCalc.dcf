@@ -5,8 +5,8 @@ account: tomfaulkenberry
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 3164218
-bundleId: 3821137
+bundleId: 3827478
 url: https://tomfaulkenberry.shinyapps.io/bayesFactorCalc/
-when: 1604524325.26496
+when: 1604660240.22269
 asMultiple: FALSE
 asStatic: FALSE

@@ -1,0 +1,13 @@
+name: psystat
+title: psystat
+username:
+account: tomfaulkenberry
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4059761
+bundleId: 4541195
+url: https://tomfaulkenberry.shinyapps.io/psystat/
+when: 1619811652.93467
+lastSyncTime: 1619811652.93468
+asMultiple: FALSE
+asStatic: FALSE

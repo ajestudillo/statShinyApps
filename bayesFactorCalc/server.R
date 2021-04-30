@@ -44,6 +44,8 @@ shinyServer(function(input, output) {
   
   observe({
     
+    req(input$t, input$pH0)
+    
     if (input$direction == "none"){
       A <- -Inf
       B <- Inf
@@ -62,14 +64,19 @@ shinyServer(function(input, output) {
         shiny:::flushReact()
         return()
       }
-      result = ttest.tstat(t = input$t, n1 = input$n, nullInterval = c(A,B))
+      req(input$n)
+      n1 = max(input$n, 2)
+      result = ttest.tstat(t = input$t, n1 = n1, nullInterval = c(A,B))
     }
     else {
       if (is.null(input$n1) | is.null(input$n2)){
         shiny:::flushReact()
         return()
       }
-      result = ttest.tstat(t = input$t, n1 = input$n1, n2 = input$n2, nullInterval = c(A,B))
+      req(input$n1, input$n2)
+      n1 = max(input$n1, 2)
+      n2 = max(input$n2, 2)
+      result = ttest.tstat(t = input$t, n1 = n1, n2 = n2, nullInterval = c(A,B))
     }
     values$BF10 <- exp(result[['bf']])
     values$BF01 <- 1/exp(result[['bf']])
@@ -84,9 +91,12 @@ shinyServer(function(input, output) {
   # Output 1 - bayes factor "pizza" plot
   output$pizza <- renderPlot({
     
-    xPos = 0.25
-    yPos = 0.75
-    radius = 0.12
+    op <- par(mar = c(0, 0, 0, 0))
+    
+    
+    xPos = 0.2
+    yPos = 0.7
+    radius = 0.2
     A = pi*radius^2
     alpha = 2/(1/values$BF01+1)*A/radius^2
     startpos = pi/2 - alpha/2
@@ -94,8 +104,8 @@ shinyServer(function(input, output) {
     text(xPos, yPos+1.2*radius, "data|H0", cex=1.5, font=2)
     text(xPos, yPos-1.22*radius, "data|H1", cex=1.5, font=2)
   },
-  width=800,
-  height=800
+  width=600,
+  height=600
   )
   
   # Output 2 - text describing Bayes factor

@@ -47,20 +47,17 @@ shinyUI(pageWithSidebar(
     br(),
     p("Designed by ", a("Tom Faulkenberry",href="http://tomfaulkenberry.github.io")),
     p("For source code, vist my ", a("Github page", href="http://github.com/tomfaulkenberry/statShinyApps/"))
-    
-    
   ),
   
   mainPanel(
-    fluidPage(
-      title = 'Model definitions',
-      withMathJax(),
-      div(helpText('Model definitions:'), align = "left", style="font-size:140%"),
-      div(sprintf('\\(\\mathcal{H}_0\\): effect size is 0'), style="font-size:130%"),
-      div(uiOutput("altText"), style="font-size:130%")
-    ),
+    div(helpText('Model definitions:'), align = "left", style="font-size:140%"),
+    div(withMathJax(sprintf('\\(\\mathcal{H}_0\\): effect size is 0')), style="font-size:130%"),
+    div(uiOutput("altText"), style="font-size:130%"),
+    br(),
+    div(helpText('Predictive adequacy:'), align = "left", style="font-size:140%"),
     
     plotOutput("pizza"),
+    
     div(helpText('Bayes factors:'), style="font-size:140%"),
     div(uiOutput("bfText"), align = "left", style="font-size:130%;"),
     div(uiOutput("description"), align = "left", style="font-size:130%"),
